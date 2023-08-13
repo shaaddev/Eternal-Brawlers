@@ -30,12 +30,15 @@ public class Enemy_Behaviour : MonoBehaviour
     private float dirX;
     #endregion
 
+    private Vector3 respawnPoint;
+    public GameObject fallDetector;
+
     private void Awake()
     {
         SelectTarget(); 
         intTimer = timer; // store the initial valie of timer
         anim = GetComponent<Animator>();
-
+        respawnPoint = transform.position;
     }
 
   
@@ -71,15 +74,22 @@ public class Enemy_Behaviour : MonoBehaviour
         {
             StopAttack();
         }
+
+        fallDetector.transform.position = new Vector2(transform.position.x, fallDetector.transform.position.y);
     }
 
     void OnTriggerEnter2D(Collider2D trig)
     {
-        if (trig.gameObject.tag == "Player")
+        if (trig.gameObject.tag == "Player" || trig.tag == "Enemy")
         {
             target = trig.transform;
             inRange = true;
             Flip();
+        }
+
+        if (trig.tag == "FallDetector")
+        {
+            transform.position = respawnPoint;
         }
     }
 

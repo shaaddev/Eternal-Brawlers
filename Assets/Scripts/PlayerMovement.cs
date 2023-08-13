@@ -19,6 +19,9 @@ public class PlayerMovement : MonoBehaviour
 
     private bool doubleJump;
 
+    private Vector3 respawnPoint;
+    public GameObject fallDetector;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -26,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         coll = GetComponent<BoxCollider2D>();
+        respawnPoint = transform.position;
     }
 
     // Update is called once per frame
@@ -57,7 +61,18 @@ public class PlayerMovement : MonoBehaviour
         {
             UpdateAnimationState();
         }
+
+        fallDetector.transform.position = new Vector2(transform.position.x, fallDetector.transform.position.y);
+
             
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "FallDetector")
+        {
+            transform.position = respawnPoint;
+        }
     }
 
     private void UpdateAnimationState()
