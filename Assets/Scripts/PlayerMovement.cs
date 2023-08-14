@@ -47,21 +47,33 @@ public class PlayerMovement : MonoBehaviour
 
         if (isGrounded() && !Input.GetButton("Jump"))
         {
+            anim.SetBool("Jumping", true);
             doubleJump = false;
+        } else
+        {
+            anim.SetBool("Jumping", false);
         }
 
         if (Input.GetButtonDown("Jump"))
         {
             if (isGrounded() || doubleJump)
             {
+                anim.SetBool("Jumping", true);
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce);
                 doubleJump = !doubleJump;
+            } else
+            {
+                anim.SetBool("Jumping", false);
             }
         }
 
         if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
         {
+            anim.SetBool("Jumping", true);
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+        } else
+        {
+            anim.SetBool("Jumping", false);
         }
 
         if (!PauseMenu.isPaused)
