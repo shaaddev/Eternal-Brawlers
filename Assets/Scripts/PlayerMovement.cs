@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
 
     private float dirX;
     private float delay = 0.3f;
-    private bool attackBlocked;
+    //private bool attackBlocked;
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private float jumpForce = 5f;
     [SerializeField] private LayerMask jumpableGround;
@@ -21,6 +22,12 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 respawnPoint;
     public GameObject fallDetector;
+
+    public Transform hitBox;
+    public float attackRange = 0.5f;
+    public LayerMask enemyLayers;
+
+    int currentLife = 0;
 
     // Start is called before the first frame update
     private void Start()
@@ -72,7 +79,20 @@ public class PlayerMovement : MonoBehaviour
         if (collision.tag == "FallDetector")
         {
             transform.position = respawnPoint;
+            currentLife++;
+            Debug.Log("Player Collision:" + currentLife);
+            if (currentLife >= 3)
+            {
+                Time.timeScale = 0f;
+                GameOver();
+            }
         }
+    }
+
+    void GameOver()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("GameOver");
     }
 
     private void UpdateAnimationState()
@@ -96,6 +116,9 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButtonDown("BasicAttack"))
         {
             Attack();
+        } else if (Input.GetButtonDown("BasicAttack2"))
+        {
+            Attack2();
         }
 
     }
@@ -107,16 +130,39 @@ public class PlayerMovement : MonoBehaviour
 
     private void Attack()
     {
-        if (attackBlocked)
-            return;
         anim.SetTrigger("BasicAttack");
-        attackBlocked = true;
+        //attackBlocked = true;
         StartCoroutine(DelayAttack());
+
+        // detect enemy
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(hitBox.position, attackRange, enemyLayers);
+
+        // Damage Them
+        foreach(Collider2D enemy in hitEnemies)
+        {
+            Debug.Log("We hit" + enemy.name);
+        }
+    }
+
+    private void Attack2()
+    {
+        anim.SetTrigger("BasicAttack2");
+        //attackBlocked = true;
+        StartCoroutine(DelayAttack());
+
+        // detect enemy
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(hitBox.position, attackRange, enemyLayers);
+
+        // Damage Them
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            Debug.Log("We hit" + enemy.name);
+        }
     }
 
     private IEnumerator DelayAttack()
     {
         yield return new WaitForSeconds(delay);
-        attackBlocked = false;
+        //attackBlocked = false;
     }
 }

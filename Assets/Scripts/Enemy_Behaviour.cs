@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D;
+using UnityEngine.SceneManagement;
 
 public class Enemy_Behaviour : MonoBehaviour
 {
@@ -32,6 +33,7 @@ public class Enemy_Behaviour : MonoBehaviour
 
     private Vector3 respawnPoint;
     public GameObject fallDetector;
+    int currentLife;
 
     private void Awake()
     {
@@ -78,6 +80,12 @@ public class Enemy_Behaviour : MonoBehaviour
         fallDetector.transform.position = new Vector2(transform.position.x, fallDetector.transform.position.y);
     }
 
+    void GameOver()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("GameOver");
+    }
+
     void OnTriggerEnter2D(Collider2D trig)
     {
         if (trig.gameObject.tag == "Player" || trig.tag == "Enemy")
@@ -90,6 +98,13 @@ public class Enemy_Behaviour : MonoBehaviour
         if (trig.tag == "FallDetector")
         {
             transform.position = respawnPoint;
+            currentLife++;
+            Debug.Log("Enemy Collision" + currentLife);
+            if (currentLife >= 5)
+            {
+                Time.timeScale = 0f;
+                GameOver();
+            }
         }
     }
 

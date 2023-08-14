@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/FFA-4.unity
     guid: 214f241313825472ab0430de28df0966
+  - enabled: 1
+    path: Assets/Scenes/GameOver.unity
+    guid: 6e816126ff9ff4cdb8623089ee66cac6
   m_configObjects: {}
