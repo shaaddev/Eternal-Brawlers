@@ -26,7 +26,15 @@ public class PlayerMovement : MonoBehaviour
     public float attackRange = 0.5f;
     public LayerMask enemyLayers;
 
-    int currentLife = 0;
+    public int playerMaxHealth = 1000;
+    int currentHealth;
+
+    public HealthBar healthBar;
+
+    public int basic_attack_dmg = 10;
+    public int basic_attack_dmg_2 = 20;
+
+
 
     // Start is called before the first frame update
     private void Start()
@@ -36,6 +44,8 @@ public class PlayerMovement : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
         coll = GetComponent<BoxCollider2D>();
         respawnPoint = transform.position;
+        currentHealth = playerMaxHealth;
+        healthBar.SetMaxHealth(playerMaxHealth);
     }
 
     // Update is called once per frame
@@ -87,17 +97,17 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "FallDetector")
-        {
-            transform.position = respawnPoint;
-            currentLife++;
-            Debug.Log("Player Collision:" + currentLife);
-            if (currentLife >= 3)
-            {
-                Time.timeScale = 0f;
-                GameOver();
-            }
-        }
+        //if (collision.tag == "FallDetector")
+        //{
+        //    transform.position = respawnPoint;
+        //    currentLife++;
+        //    Debug.Log("Player Collision:" + currentLife);
+        //    if (currentLife >= 3)
+        //    {
+        //        Time.timeScale = 0f;
+        //        GameOver();
+        //    }
+        //}
     }
 
     void GameOver()
@@ -142,7 +152,7 @@ public class PlayerMovement : MonoBehaviour
     private void Attack()
     {
         anim.SetTrigger("BasicAttack");
-        //attackBlocked = true;
+        
         StartCoroutine(DelayAttack());
 
         // detect enemy
@@ -151,8 +161,37 @@ public class PlayerMovement : MonoBehaviour
         // Damage Them
         foreach(Collider2D enemy in hitEnemies)
         {
-            Debug.Log("We hit" + enemy.name);
+            enemy.GetComponent<Enemy_Behaviour>().TakeDamage(basic_attack_dmg);
         }
+    }
+
+    public void PlayerTakeDamage(int damage)
+    {
+        currentHealth -= damage;
+
+        healthBar.SetHealth(currentHealth);
+
+        anim.SetTrigger("Hurt");
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        anim.SetBool("isDead", true);
+
+        this.enabled = false;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (hitBox == null)
+            return;
+
+        Gizmos.DrawWireSphere(hitBox.position, attackRange);
     }
 
     private void Attack2()
@@ -167,7 +206,7 @@ public class PlayerMovement : MonoBehaviour
         // Damage Them
         foreach (Collider2D enemy in hitEnemies)
         {
-            Debug.Log("We hit" + enemy.name);
+            enemy.GetComponent<Enemy_Behaviour>().TakeDamage(basic_attack_dmg_2);
         }
     }
 

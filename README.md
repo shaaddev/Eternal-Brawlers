@@ -11,4 +11,12 @@ Game Details:
 - 4 Game Modes
 - No multiplayer
 - No character selection
-- Limited Time
+
+
+Debug:
+- NullReferenceException - Attack()
+- HitBox is not triggered when flipped
+- High Damage to Player (Almost too powerful)
+
+Add:
+- Sounds

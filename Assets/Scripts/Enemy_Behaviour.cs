@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Enemy_Behaviour : MonoBehaviour
 {
@@ -29,10 +30,20 @@ public class Enemy_Behaviour : MonoBehaviour
     private bool cooling; // Check if Enemy is cooling after attack
     private float intTimer;
     private float dirX;
+    private float delay = 0.5f;
     #endregion
 
     private Vector3 respawnPoint;
-    int currentLife;
+    public int maxHealth = 100;
+    int currentHealth;
+
+    public Transform hitBox;
+    public LayerMask playerLayers;
+    public float attackRange = 0.5f;
+
+    public int enemy_attack = 1;
+
+    public HealthBar healthBar;
 
     private void Awake()
     {
@@ -40,6 +51,8 @@ public class Enemy_Behaviour : MonoBehaviour
         intTimer = timer; // store the initial valie of timer
         anim = GetComponent<Animator>();
         respawnPoint = transform.position;
+        currentHealth = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
     }
 
   
@@ -94,17 +107,30 @@ public class Enemy_Behaviour : MonoBehaviour
             Flip();
         }
 
-        if (trig.tag == "FallDetector")
+        
+    }
+
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+
+        healthBar.SetHealth(currentHealth);
+
+        //play hurt animation
+        anim.SetTrigger("Hurt");
+
+        if (currentHealth <= 0)
         {
-            transform.position = respawnPoint;
-            currentLife++;
-            Debug.Log("Enemy Collision" + currentLife);
-            if (currentLife >= 5)
-            {
-                Time.timeScale = 0f;
-                GameOver();
-            }
+            Die();
         }
+    }
+
+    void Die()
+    {   
+        anim.SetBool("isDead", true);
+
+        GetComponent<Collider2D>().enabled = false;
+        this.enabled = false;
     }
 
     void EnemyLogic()
@@ -145,9 +171,20 @@ public class Enemy_Behaviour : MonoBehaviour
         timer = intTimer; // reset timer
         attackMode = true; // to check if enemy can still attack or not
 
+
         anim.SetBool("Running", false);
         anim.SetBool("BasicAttack", true);
+
+        StartCoroutine(DelayAttack());
+
+        Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(hitBox.position, attackRange, playerLayers);
+
+        foreach(Collider2D player in hitPlayer)
+        {
+            player.GetComponent<PlayerMovement>().PlayerTakeDamage(enemy_attack);
+        }
     }
+
 
     void StopAttack()
     {
@@ -202,5 +239,11 @@ public class Enemy_Behaviour : MonoBehaviour
         }
 
         transform.eulerAngles = rotation;
+    }
+
+    private IEnumerator DelayAttack()
+    {
+        yield return new WaitForSeconds(delay);
+        //attackBlocked = false;
     }
 }
