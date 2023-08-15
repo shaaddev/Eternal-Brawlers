@@ -73,3 +73,5 @@ crashlytics-build.properties
 
 # misc
 .DS_Store
+.vsconfig
+*.blob
