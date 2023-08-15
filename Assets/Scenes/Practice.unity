@@ -207,7 +207,7 @@ GameObject:
   - component: {fileID: 242110795}
   m_Layer: 8
   m_Name: MedWarrior_Enemy
-  m_TagString: Enemy
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -376,7 +376,6 @@ MonoBehaviour:
   timer: 0
   leftLimit: {fileID: 1341427404}
   rightLimit: {fileID: 1022548030}
-  fallDetector: {fileID: 989897786}
 --- !u!95 &242110796
 Animator:
   serializedVersion: 5
@@ -3436,7 +3435,6 @@ MonoBehaviour:
   jumpableGround:
     serializedVersion: 2
     m_Bits: 128
-  fallDetector: {fileID: 989897786}
   hitBox: {fileID: 1407283680}
   attackRange: 0.5
   enemyLayers:

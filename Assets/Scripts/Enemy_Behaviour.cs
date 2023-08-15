@@ -32,7 +32,6 @@ public class Enemy_Behaviour : MonoBehaviour
     #endregion
 
     private Vector3 respawnPoint;
-    public GameObject fallDetector;
     int currentLife;
 
     private void Awake()
@@ -77,7 +76,7 @@ public class Enemy_Behaviour : MonoBehaviour
             StopAttack();
         }
 
-        fallDetector.transform.position = new Vector2(transform.position.x, fallDetector.transform.position.y);
+        //fallDetector.transform.position = new Vector2(transform.position.x, fallDetector.transform.position.y);
     }
 
     void GameOver()

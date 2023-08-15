@@ -21,7 +21,6 @@ public class PlayerMovement : MonoBehaviour
     private bool doubleJump;
 
     private Vector3 respawnPoint;
-    public GameObject fallDetector;
 
     public Transform hitBox;
     public float attackRange = 0.5f;
@@ -81,7 +80,7 @@ public class PlayerMovement : MonoBehaviour
             UpdateAnimationState();
         }
 
-        fallDetector.transform.position = new Vector2(transform.position.x, fallDetector.transform.position.y);
+        //fallDetector.transform.position = new Vector2(transform.position.x, fallDetector.transform.position.y);
 
             
     }

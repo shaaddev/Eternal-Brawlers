@@ -4770,7 +4770,7 @@ GameObject:
   - component: {fileID: 1929246342}
   m_Layer: 8
   m_Name: Warrior_Enemy2
-  m_TagString: Enemy
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4797,7 +4797,6 @@ MonoBehaviour:
   timer: 0
   leftLimit: {fileID: 719795377}
   rightLimit: {fileID: 325826886}
-  fallDetector: {fileID: 514441635}
 --- !u!61 &1929246343
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5097,7 +5096,6 @@ MonoBehaviour:
   jumpableGround:
     serializedVersion: 2
     m_Bits: 128
-  fallDetector: {fileID: 0}
   hitBox: {fileID: 2053749940}
   attackRange: 0.5
   enemyLayers:
