@@ -31,6 +31,7 @@ public class Enemy_Behaviour : MonoBehaviour
     private float intTimer;
     private float dirX;
     private float delay = 0.5f;
+    private float delayScene = 5f;
     #endregion
 
     private Vector3 respawnPoint;
@@ -45,6 +46,8 @@ public class Enemy_Behaviour : MonoBehaviour
 
     public HealthBar healthBar;
 
+    private float timeElapsed;
+
     private void Awake()
     {
         SelectTarget(); 
@@ -58,6 +61,8 @@ public class Enemy_Behaviour : MonoBehaviour
   
     void Update()
     {
+        timeElapsed += Time.deltaTime;
+
         if (inRange)
         {
             hit = Physics2D.Raycast(rayCast.position, transform.right, rayCastLength, rayCastMask);
@@ -121,6 +126,7 @@ public class Enemy_Behaviour : MonoBehaviour
 
         if (currentHealth <= 0)
         {
+            Time.timeScale = 0f;
             Die();
         }
     }
@@ -129,8 +135,9 @@ public class Enemy_Behaviour : MonoBehaviour
     {   
         anim.SetBool("isDead", true);
 
-        GetComponent<Collider2D>().enabled = false;
+        //GetComponent<Collider2D>().enabled = false;
         this.enabled = false;
+        GameOver();
     }
 
     void EnemyLogic()
@@ -245,5 +252,10 @@ public class Enemy_Behaviour : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         //attackBlocked = false;
+    }
+
+    private IEnumerator DelayScene()
+    {
+        yield return new WaitForSeconds(delayScene);
     }
 }

@@ -6,6 +6,8 @@ TagManager:
   tags:
   - FallDetector
   - Enemy
+  - GameMusic
+  - GamePlay
   layers:
   - Default
   - TransparentFX
@@ -16,7 +18,7 @@ TagManager:
   - Player
   - Ground
   - Enemy
-  - 
+  - GamePlay
   - 
   - 
   - 

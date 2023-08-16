@@ -5,14 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class GameOverMenu : MonoBehaviour
 {
-    private bool keyPressed = false;
     
-    void Update()
+    public void GotoMainMenu()
     {
-        if(Input.anyKey && !keyPressed)
-        {
-            keyPressed = true;
-            SceneManager.LoadScene("MainMenu");
-        }
+        SceneManager.LoadScene("MainMenu");
     }
 }

@@ -34,6 +34,10 @@ public class PlayerMovement : MonoBehaviour
     public int basic_attack_dmg = 10;
     public int basic_attack_dmg_2 = 20;
 
+    [SerializeField] private AudioSource jumpAudio;
+    [SerializeField] private AudioSource attackAudio;
+    [SerializeField] private AudioSource attack2Audio;
+
 
 
     // Start is called before the first frame update
@@ -58,6 +62,7 @@ public class PlayerMovement : MonoBehaviour
         {
             anim.SetBool("Jumping", true);
             doubleJump = false;
+            
         } else
         {
             anim.SetBool("Jumping", false);
@@ -70,6 +75,8 @@ public class PlayerMovement : MonoBehaviour
                 anim.SetBool("Jumping", true);
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce);
                 doubleJump = !doubleJump;
+                jumpAudio.Play();
+                
             } else
             {
                 anim.SetBool("Jumping", false);
@@ -80,6 +87,7 @@ public class PlayerMovement : MonoBehaviour
         {
             anim.SetBool("Jumping", true);
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+            
         } else
         {
             anim.SetBool("Jumping", false);
@@ -89,25 +97,12 @@ public class PlayerMovement : MonoBehaviour
         {
             UpdateAnimationState();
         }
-
-        //fallDetector.transform.position = new Vector2(transform.position.x, fallDetector.transform.position.y);
-
             
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //if (collision.tag == "FallDetector")
-        //{
-        //    transform.position = respawnPoint;
-        //    currentLife++;
-        //    Debug.Log("Player Collision:" + currentLife);
-        //    if (currentLife >= 3)
-        //    {
-        //        Time.timeScale = 0f;
-        //        GameOver();
-        //    }
-        //}
+        
     }
 
     void GameOver()
@@ -152,6 +147,7 @@ public class PlayerMovement : MonoBehaviour
     private void Attack()
     {
         anim.SetTrigger("BasicAttack");
+        attackAudio.Play();
         
         StartCoroutine(DelayAttack());
 
@@ -175,6 +171,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (currentHealth <= 0)
         {
+            Time.timeScale = 0f;
             Die();
         }
     }
@@ -184,6 +181,7 @@ public class PlayerMovement : MonoBehaviour
         anim.SetBool("isDead", true);
 
         this.enabled = false;
+        GameOver();
     }
 
     private void OnDrawGizmosSelected()
@@ -197,13 +195,14 @@ public class PlayerMovement : MonoBehaviour
     private void Attack2()
     {
         anim.SetTrigger("BasicAttack2");
-        //attackBlocked = true;
+        attack2Audio.Play();
+
         StartCoroutine(DelayAttack());
 
-        // detect enemy
+        
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(hitBox.position, attackRange, enemyLayers);
 
-        // Damage Them
+        
         foreach (Collider2D enemy in hitEnemies)
         {
             enemy.GetComponent<Enemy_Behaviour>().TakeDamage(basic_attack_dmg_2);
