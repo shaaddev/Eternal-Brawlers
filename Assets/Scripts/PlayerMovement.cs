@@ -13,14 +13,12 @@ public class PlayerMovement : MonoBehaviour
 
     private float dirX;
     private float delay = 0.3f;
-    //private bool attackBlocked;
+   
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private float jumpForce = 5f;
     [SerializeField] private LayerMask jumpableGround;
 
     private bool doubleJump;
-
-    private Vector3 respawnPoint;
 
     public Transform hitBox;
     public float attackRange = 0.5f;
@@ -47,7 +45,6 @@ public class PlayerMovement : MonoBehaviour
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         coll = GetComponent<BoxCollider2D>();
-        respawnPoint = transform.position;
         currentHealth = playerMaxHealth;
         healthBar.SetMaxHealth(playerMaxHealth);
     }
@@ -155,9 +152,32 @@ public class PlayerMovement : MonoBehaviour
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(hitBox.position, attackRange, enemyLayers);
 
         // Damage Them
-        foreach(Collider2D enemy in hitEnemies)
+        foreach (Collider2D enemy in hitEnemies)
         {
-            enemy.GetComponent<Enemy_Behaviour>().TakeDamage(basic_attack_dmg);
+            Enemy enemyCh = enemy.GetComponent<Enemy>();
+            if (enemyCh == null)
+                return;
+            enemyCh.TakeDamage(basic_attack_dmg);
+        }
+    }
+
+    private void Attack2()
+    {
+        anim.SetTrigger("BasicAttack2");
+        attack2Audio.Play();
+
+        StartCoroutine(DelayAttack());
+
+
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(hitBox.position, attackRange, enemyLayers);
+
+
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            Enemy enemyCh = enemy.GetComponent<Enemy>();
+            if (enemyCh == null)
+                return;
+            enemyCh.TakeDamage(basic_attack_dmg_2);
         }
     }
 
@@ -192,22 +212,7 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.DrawWireSphere(hitBox.position, attackRange);
     }
 
-    private void Attack2()
-    {
-        anim.SetTrigger("BasicAttack2");
-        attack2Audio.Play();
-
-        StartCoroutine(DelayAttack());
-
-        
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(hitBox.position, attackRange, enemyLayers);
-
-        
-        foreach (Collider2D enemy in hitEnemies)
-        {
-            enemy.GetComponent<Enemy_Behaviour>().TakeDamage(basic_attack_dmg_2);
-        }
-    }
+    
 
     private IEnumerator DelayAttack()
     {

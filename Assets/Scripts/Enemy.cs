@@ -5,7 +5,7 @@ using UnityEngine.U2D;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class Enemy_Behaviour : MonoBehaviour
+public class Enemy : MonoBehaviour
 {
     #region Public Variables
     public Transform rayCast;
@@ -34,7 +34,6 @@ public class Enemy_Behaviour : MonoBehaviour
     private float delayScene = 5f;
     #endregion
 
-    private Vector3 respawnPoint;
     public int maxHealth = 100;
     int currentHealth;
 
@@ -42,7 +41,7 @@ public class Enemy_Behaviour : MonoBehaviour
     public LayerMask playerLayers;
     public float attackRange = 0.5f;
 
-    public int enemy_attack = 1;
+    public int enemy_attack = 10;
 
     public HealthBar healthBar;
 
@@ -53,7 +52,6 @@ public class Enemy_Behaviour : MonoBehaviour
         SelectTarget(); 
         intTimer = timer; // store the initial valie of timer
         anim = GetComponent<Animator>();
-        respawnPoint = transform.position;
         currentHealth = maxHealth;
         healthBar.SetMaxHealth(maxHealth);
     }
@@ -135,7 +133,8 @@ public class Enemy_Behaviour : MonoBehaviour
     {   
         anim.SetBool("isDead", true);
 
-        //GetComponent<Collider2D>().enabled = false;
+        GetComponent<Rigidbody2D>().isKinematic = true;
+        GetComponent<Collider2D>().enabled = false;
         this.enabled = false;
         GameOver();
     }
@@ -186,9 +185,12 @@ public class Enemy_Behaviour : MonoBehaviour
 
         Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(hitBox.position, attackRange, playerLayers);
 
-        foreach(Collider2D player in hitPlayer)
+        foreach (Collider2D player in hitPlayer)
         {
-            player.GetComponent<PlayerMovement>().PlayerTakeDamage(enemy_attack);
+            PlayerMovement playCh = player.GetComponent<PlayerMovement>();
+            if (playCh == null)
+                return;
+            playCh.PlayerTakeDamage(enemy_attack);
         }
     }
 
