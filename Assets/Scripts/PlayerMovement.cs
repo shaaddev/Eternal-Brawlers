@@ -24,17 +24,20 @@ public class PlayerMovement : MonoBehaviour
     public float attackRange = 0.5f;
     public LayerMask enemyLayers;
 
+
     public int playerMaxHealth = 1000;
     int currentHealth;
 
     public HealthBar healthBar;
 
-    public int basic_attack_dmg = 10;
-    public int basic_attack_dmg_2 = 20;
+    public int attack_dmg = 10;
+    public int attack2_dmg = 20;
 
     [SerializeField] private AudioSource jumpAudio;
     [SerializeField] private AudioSource attackAudio;
     [SerializeField] private AudioSource attack2Audio;
+
+    public Enemy enemy;
 
 
 
@@ -97,11 +100,6 @@ public class PlayerMovement : MonoBehaviour
             
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        
-    }
-
     void GameOver()
     {
         Time.timeScale = 1f;
@@ -141,6 +139,11 @@ public class PlayerMovement : MonoBehaviour
         return Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, .1f, jumpableGround);
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+       
+    }
+
     private void Attack()
     {
         anim.SetTrigger("BasicAttack");
@@ -151,13 +154,13 @@ public class PlayerMovement : MonoBehaviour
         // detect enemy
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(hitBox.position, attackRange, enemyLayers);
 
-        // Damage Them
+        //// Damage Them
         foreach (Collider2D enemy in hitEnemies)
         {
             Enemy enemyCh = enemy.GetComponent<Enemy>();
             if (enemyCh == null)
                 return;
-            enemyCh.TakeDamage(basic_attack_dmg);
+            enemyCh.TakeDamage(attack_dmg);
         }
     }
 
@@ -177,7 +180,8 @@ public class PlayerMovement : MonoBehaviour
             Enemy enemyCh = enemy.GetComponent<Enemy>();
             if (enemyCh == null)
                 return;
-            enemyCh.TakeDamage(basic_attack_dmg_2);
+            enemyCh.TakeDamage(attack2_dmg);
+
         }
     }
 

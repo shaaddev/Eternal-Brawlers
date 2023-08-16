@@ -45,8 +45,6 @@ public class Enemy : MonoBehaviour
 
     public HealthBar healthBar;
 
-    private float timeElapsed;
-
     private void Awake()
     {
         SelectTarget(); 
@@ -59,7 +57,6 @@ public class Enemy : MonoBehaviour
   
     void Update()
     {
-        timeElapsed += Time.deltaTime;
 
         if (inRange)
         {
@@ -91,8 +88,6 @@ public class Enemy : MonoBehaviour
         {
             StopAttack();
         }
-
-        //fallDetector.transform.position = new Vector2(transform.position.x, fallDetector.transform.position.y);
     }
 
     void GameOver()
