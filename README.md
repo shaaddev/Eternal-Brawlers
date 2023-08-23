@@ -3,20 +3,20 @@
 Techwise Course 1 Project
 
 ## Details
-A 2-Dimensional Indie Fighting Game
+A 2-Dimensional Indie Survival Game
 
 Game Details:
 - Unity Engine
 - Host on itch.io
-- 4 Game Modes
-- No multiplayer
-- No character selection
-
-
-Debug:
-- NullReferenceException - Attack()
-- HitBox is not triggered when flipped
-- High Damage to Player (Almost too powerful)
+- Top Down Survival
+- Melee Combat Only
 
 Add:
 - Sounds
+- Physics
+- Newer Menu
+
+Future:
+- Other Weapons
+- Boosts
+- Powerups

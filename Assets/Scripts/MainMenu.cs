@@ -12,21 +12,6 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene("Practice");
     }
 
-    public void OnevOne()
-    {
-        SceneManager.LoadScene("1v1");
-    }
-
-    public void FFAthree()
-    {
-        SceneManager.LoadScene("FFA-3");
-    }
-
-    public void FFAfour()
-    {
-        SceneManager.LoadScene("FFA-4");
-    }
-
     void Update()
     {
         if (Input.GetButtonDown("Cancel") && !keyPressed)

@@ -1,226 +1,102 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private Rigidbody2D rb;
-    private Animator anim;
-    private SpriteRenderer sprite;
-    private BoxCollider2D coll;
-    
+    Rigidbody2D rb;
+    Animator anim;
+    SpriteRenderer sprite;
 
-    private float dirX;
-    private float delay = 0.3f;
-   
-    [SerializeField] private float moveSpeed = 7f;
-    [SerializeField] private float jumpForce = 5f;
-    [SerializeField] private LayerMask jumpableGround;
+    Vector2 movementInput;
 
-    private bool doubleJump;
+    public float moveSpeed = 7f;
+    public float collisionOffset = 0.05f;
+    public ContactFilter2D movementFilter;
+    List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
 
-    public Transform hitBox;
-    public float attackRange = 0.5f;
-    public LayerMask enemyLayers;
+    public SwordAttack swordAttack;
+    bool canMove = true;
 
 
-    public int playerMaxHealth = 1000;
-    int currentHealth;
-
-    public HealthBar healthBar;
-
-    public int attack_dmg = 10;
-    public int attack2_dmg = 20;
-
-    [SerializeField] private AudioSource jumpAudio;
-    [SerializeField] private AudioSource attackAudio;
-    [SerializeField] private AudioSource attack2Audio;
-
-    public Enemy enemy;
-
-
-
-    // Start is called before the first frame update
-    private void Start()
+    void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
-        coll = GetComponent<BoxCollider2D>();
-        currentHealth = playerMaxHealth;
-        healthBar.SetMaxHealth(playerMaxHealth);
     }
 
-    // Update is called once per frame
-    private void Update()
-    {
-        dirX = Input.GetAxisRaw("Horizontal");
-        rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
+    private void FixedUpdate() {
+        if (canMove){
+            if (movementInput != Vector2.zero) {
+                bool success = TryMove(movementInput);
 
-        if (isGrounded() && !Input.GetButton("Jump"))
-        {
-            anim.SetBool("Jumping", true);
-            doubleJump = false;
-            
-        } else
-        {
-            anim.SetBool("Jumping", false);
-        }
+                if (!success){
+                    success = TryMove(new Vector2(movementInput.x, 0));
 
-        if (Input.GetButtonDown("Jump"))
-        {
-            if (isGrounded() || doubleJump)
-            {
-                anim.SetBool("Jumping", true);
-                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-                doubleJump = !doubleJump;
-                jumpAudio.Play();
-                
-            } else
-            {
-                anim.SetBool("Jumping", false);
+                    if (!success){
+                        success = TryMove(new Vector2(0, movementInput.y));
+                    }
+                }
+
+                anim.SetBool("isMoving", success);
+            } else {
+                anim.SetBool("isMoving", false);
+            }
+
+            if (movementInput.x < 0){
+                sprite.flipX = true;
+            } else if (movementInput.x > 0){
+                sprite.flipX = false;
             }
         }
-
-        if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
-        {
-            anim.SetBool("Jumping", true);
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
-            
-        } else
-        {
-            anim.SetBool("Jumping", false);
-        }
-
-        if (!PauseMenu.isPaused)
-        {
-            UpdateAnimationState();
-        }
-            
     }
 
-    void GameOver()
-    {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene("GameOver");
+    private bool TryMove(Vector2 direction){
+        // check for potential collisions
+        int count = rb.Cast(
+                movementInput,
+                movementFilter,
+                castCollisions,
+                moveSpeed * Time.fixedDeltaTime + collisionOffset);
+
+            if (count == 0){
+                rb.MovePosition(rb.position + movementInput * moveSpeed * Time.fixedDeltaTime);
+                return true;
+            } else {
+                return false;
+            }
     }
 
-    private void UpdateAnimationState()
-    {
-
-        if (dirX > 0f)
-        {
-            anim.SetBool("Running", true);
-            sprite.flipX = false;
-        }
-        else if (dirX < 0f)
-        {
-            anim.SetBool("Running", true);
-            sprite.flipX = true;
-        }
-        else
-        {
-            anim.SetBool("Running", false);
-        }
-
-        if (Input.GetButtonDown("BasicAttack"))
-        {
-            Attack();
-        } else if (Input.GetButtonDown("BasicAttack2"))
-        {
-            Attack2();
-        }
-
+    void OnMove(InputValue movementValue) {
+        movementInput = movementValue.Get<Vector2>();
     }
 
-    private bool isGrounded()
-    {
-        return Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, .1f, jumpableGround);
+    void OnFire(){
+        anim.SetTrigger("sword_attack");
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-       
+    public void SwordAttack(){
+        LockMovement();
+
+        if (sprite.flipX == true){
+            swordAttack.AttackLeft();
+        } else {
+            swordAttack.AttackRight();
+        }   
     }
 
-    private void Attack()
-    {
-        anim.SetTrigger("BasicAttack");
-        attackAudio.Play();
-        
-        StartCoroutine(DelayAttack());
-
-        // detect enemy
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(hitBox.position, attackRange, enemyLayers);
-
-        //// Damage Them
-        foreach (Collider2D enemy in hitEnemies)
-        {
-            Enemy enemyCh = enemy.GetComponent<Enemy>();
-            if (enemyCh == null)
-                return;
-            enemyCh.TakeDamage(attack_dmg);
-        }
+    public void EndSwordAttack(){
+        UnlockMovement();
+        swordAttack.StopAttack();
     }
 
-    private void Attack2()
-    {
-        anim.SetTrigger("BasicAttack2");
-        attack2Audio.Play();
-
-        StartCoroutine(DelayAttack());
-
-
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(hitBox.position, attackRange, enemyLayers);
-
-
-        foreach (Collider2D enemy in hitEnemies)
-        {
-            Enemy enemyCh = enemy.GetComponent<Enemy>();
-            if (enemyCh == null)
-                return;
-            enemyCh.TakeDamage(attack2_dmg);
-
-        }
+    public void LockMovement(){
+        canMove = false;
     }
 
-    public void PlayerTakeDamage(int damage)
-    {
-        currentHealth -= damage;
-
-        healthBar.SetHealth(currentHealth);
-
-        anim.SetTrigger("Hurt");
-
-        if (currentHealth <= 0)
-        {
-            Time.timeScale = 0f;
-            Die();
-        }
-    }
-
-    void Die()
-    {
-        anim.SetBool("isDead", true);
-
-        this.enabled = false;
-        GameOver();
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        if (hitBox == null)
-            return;
-
-        Gizmos.DrawWireSphere(hitBox.position, attackRange);
-    }
-
-    
-
-    private IEnumerator DelayAttack()
-    {
-        yield return new WaitForSeconds(delay);
-        //attackBlocked = false;
+    public void UnlockMovement(){
+        canMove = true;
     }
 }
