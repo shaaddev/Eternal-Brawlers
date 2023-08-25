@@ -4,40 +4,59 @@ using UnityEngine;
 
 public class SwordAttack : MonoBehaviour
 {
-    public float damage = 2;
+    public  Collider2D swordCollider;
+    public float swordDamage = 2f;
+    public float knockbackForce = 5000f;
 
-    Vector2 rightAttackOffset;
-    public Collider2D swordCollider;
+    public Vector3 faceRight = new Vector3(1, -0.9f, 0);
+    public Vector3 faceLeft = new Vector3(-1, -0.9f, 0);
 
-    private void Start(){
-        rightAttackOffset = transform.position;
-    }
-
-    public void AttackRight(){
-        // print("right");
-        swordCollider.enabled = true;
-        transform.localPosition = rightAttackOffset;
-    }
-
-    public void AttackLeft(){
-        // print("left")
-        swordCollider.enabled = true;
-        transform.localPosition = new Vector3(rightAttackOffset.x * -1, rightAttackOffset.y);
-    }
-
-    public void StopAttack(){
-        swordCollider.enabled = false;
-    }
-
-    private void OnTriggerEnter2D(Collider2D other){
-        if (other.tag == "Enemy"){
-            // dealo damage
-            Enemy enemy = other.GetComponent<Enemy>();
-
-            if (enemy != null){
-                print("hit");
-                enemy.Health -= damage;
-            }
+    void Start(){
+        // swordCollider.GetComponent<Collider2D>();
+        if (swordCollider == null){
+            Debug.LogWarning("Sword Collider not set");
         }
     }
+
+    void OnCollisionEnter2D(Collision2D col){
+        col.collider.SendMessage("OnHit", swordDamage);
+    }
+
+    void OnTriggerEnter2D(Collider2D other){
+    
+        IDamageable damageableObject = other.GetComponent<IDamageable>();
+
+        if (damageableObject != null){
+            // calculate direction between player and enemy
+            Vector3 parentPosition = gameObject.GetComponentInParent<Transform>().position;
+
+            Vector2 direction = (Vector2) (other.gameObject.transform.position - parentPosition).normalized;
+            Vector2 knockback = direction * knockbackForce;
+
+            //
+            damageableObject.OnHit(swordDamage, knockback);
+        } else {
+            Debug.LogWarning("Collider does not Implement IDamageabel");
+        }
+    }
+
+    void IsFacingRight(bool isFacingRight){
+        if (isFacingRight){
+            gameObject.transform.localPosition = faceRight;
+        } else {
+            gameObject.transform.localPosition = faceLeft;
+        }
+    }
+
+    // if (other.tag == "Enemy"){
+        //     Enemy enemy = other.GetComponent<Enemy>();
+
+        //     if (enemy != null){
+        //         print("hit");
+        //         other.SendMessage("OnHit", swordDamage);
+        //     }
+        // }
+
+        // other.SendMessage("OnHit", swordDamage);
+
 }
