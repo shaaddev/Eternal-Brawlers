@@ -10,11 +10,11 @@ Game Details:
 - Host on itch.io
 - Top Down Survival
 - Melee Combat Only
+- Two Modes (Endless x Normal)
 
 Add:
+- Updated Menu
 - Sounds
-- Physics
-- Newer Menu
 
 Future:
 - Other Weapons

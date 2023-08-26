@@ -8,6 +8,8 @@ TagManager:
   - Enemy
   - GameMusic
   - GamePlay
+  - HealthText
+  - Canvas
   layers:
   - Default
   - TransparentFX

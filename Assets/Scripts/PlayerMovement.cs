@@ -20,14 +20,14 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 200f;
     public float maxSpeed = 7f;
     public float idleFriction = 0.9f;
-    List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
 
-    // public SwordAttack swordAttack;
     bool canMove = true;
     bool isMoving = false;
 
     public GameObject swordHitBox;
     Collider2D swordCollider;
+
+    public HealthBar healthBar;
 
 
     void Start()
@@ -63,22 +63,6 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    // private bool TryMove(Vector2 direction){
-    //     // check for potential collisions
-    //     int count = rb.Cast(
-    //             movementInput,
-    //             movementFilter,
-    //             castCollisions,
-    //             moveSpeed * Time.fixedDeltaTime + collisionOffset);
-
-    //         if (count == 0){
-    //             rb.MovePosition(rb.position + movementInput * moveSpeed * Time.fixedDeltaTime);
-    //             return true;
-    //         } else {
-    //             return false;
-    //         }
-    // }
-
     void OnMove(InputValue movementValue) {
         movementInput = movementValue.Get<Vector2>();
     }
@@ -86,21 +70,6 @@ public class PlayerMovement : MonoBehaviour
     void OnFire(){
         anim.SetTrigger("sword_attack");
     }
-
-    // public void SwordAttack(){
-    //     LockMovement();
-
-    //     if (sprite.flipX == true){
-    //         swordAttack.AttackLeft();
-    //     } else {
-    //         swordAttack.AttackRight();
-    //     }   
-    // }
-
-    // public void EndSwordAttack(){
-    //     UnlockMovement();
-    //     swordAttack.StopAttack();
-    // }
 
     public void LockMovement(){
         canMove = false;

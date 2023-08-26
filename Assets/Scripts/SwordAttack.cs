@@ -6,10 +6,10 @@ public class SwordAttack : MonoBehaviour
 {
     public  Collider2D swordCollider;
     public float swordDamage = 2f;
-    public float knockbackForce = 5000f;
+    public float knockbackForce = 500f;
 
-    public Vector3 faceRight = new Vector3(1, -0.9f, 0);
-    public Vector3 faceLeft = new Vector3(-1, -0.9f, 0);
+    public Vector3 faceRight = new Vector3(0.8f, 0.2f, 0);
+    public Vector3 faceLeft = new Vector3(-0.8f, 0.2f, 0);
 
     void Start(){
         // swordCollider.GetComponent<Collider2D>();
@@ -28,16 +28,14 @@ public class SwordAttack : MonoBehaviour
 
         if (damageableObject != null){
             // calculate direction between player and enemy
-            Vector3 parentPosition = gameObject.GetComponentInParent<Transform>().position;
+            Vector3 parentPosition = transform.parent.position;
 
             Vector2 direction = (Vector2) (other.gameObject.transform.position - parentPosition).normalized;
             Vector2 knockback = direction * knockbackForce;
 
             //
             damageableObject.OnHit(swordDamage, knockback);
-        } else {
-            Debug.LogWarning("Collider does not Implement IDamageabel");
-        }
+        } 
     }
 
     void IsFacingRight(bool isFacingRight){
@@ -47,16 +45,5 @@ public class SwordAttack : MonoBehaviour
             gameObject.transform.localPosition = faceLeft;
         }
     }
-
-    // if (other.tag == "Enemy"){
-        //     Enemy enemy = other.GetComponent<Enemy>();
-
-        //     if (enemy != null){
-        //         print("hit");
-        //         other.SendMessage("OnHit", swordDamage);
-        //     }
-        // }
-
-        // other.SendMessage("OnHit", swordDamage);
 
 }
