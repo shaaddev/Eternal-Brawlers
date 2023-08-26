@@ -2,15 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
     private bool keyPressed = false;
 
-    public void Practice()
-    {
-        SceneManager.LoadScene("Practice");
-    }
+    public GameObject switchT;
+    // bool isSwitched = true;
 
     void Update()
     {
@@ -20,4 +19,17 @@ public class MainMenu : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
         }
     }
+
+    public void gameMode(){
+        bool isGame = switchT.GetComponent<Toggle>().isOn;
+        if (isGame){
+            SceneManager.LoadScene("Level1");
+            // Debug.Log("Endless Mode");
+        } else {
+            SceneManager.LoadScene("Level1");
+            // Debug.Log("Normal Mode");
+        }
+    }
+
+
 }

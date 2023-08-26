@@ -13,8 +13,8 @@ Game Details:
 - Two Modes (Endless x Normal)
 
 Add:
-- Updated Menu
 - Sounds
+- Endless Mode (Design)
 
 Future:
 - Other Weapons

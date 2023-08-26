@@ -1103,7 +1103,7 @@ GameObject:
   - component: {fileID: 4966846513055177595}
   - component: {fileID: 4122583034657157321}
   m_Layer: 0
-  m_Name: Mountains
+  m_Name: plains
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
