@@ -23,10 +23,10 @@ public class MainMenu : MonoBehaviour
     public void gameMode(){
         bool isGame = switchT.GetComponent<Toggle>().isOn;
         if (isGame){
-            SceneManager.LoadScene("Level1");
+            SceneManager.LoadScene("EndlessLevel");
             // Debug.Log("Endless Mode");
         } else {
-            SceneManager.LoadScene("Level1");
+            SceneManager.LoadScene("NormalLevel");
             // Debug.Log("Normal Mode");
         }
     }

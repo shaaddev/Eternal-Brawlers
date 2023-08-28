@@ -10,6 +10,7 @@ TagManager:
   - GamePlay
   - HealthText
   - Canvas
+  - Middle
   layers:
   - Default
   - TransparentFX

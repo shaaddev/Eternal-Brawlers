@@ -27,8 +27,6 @@ public class PlayerMovement : MonoBehaviour
     public GameObject swordHitBox;
     Collider2D swordCollider;
 
-    public HealthBar healthBar;
-
 
     void Start()
     {
