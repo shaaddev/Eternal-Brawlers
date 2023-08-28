@@ -5,12 +5,14 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     Rigidbody2D rb;
+    SpriteRenderer sprite;
     public float damage = 4f;
     public float moveSpeed = 500f;
     public DetectionZone detectionZone;
 
     void Start(){
         rb = GetComponent<Rigidbody2D>();
+        sprite = GetComponent<SpriteRenderer>();
     }
 
     void FixedUpdate(){
@@ -21,6 +23,7 @@ public class Enemy : MonoBehaviour
             // move towards object
             rb.AddForce(direction * moveSpeed * Time.deltaTime);
         }
+
     }
     void OnCollisionEnter2D(Collision2D col){
         IDamageable damageable = col.collider.GetComponent<IDamageable>();

@@ -7,7 +7,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private GameObject slimePrefab;
     // [SerializeField] private GameObject ;
 
-    [SerializeField] private float slimeInterval = 3.5f;
+    [SerializeField] private float slimeInterval = 1f;
     // Start is called before the first frame update
     void Start()
     {

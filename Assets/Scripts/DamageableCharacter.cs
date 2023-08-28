@@ -36,7 +36,7 @@ public class DamageableCharacter : MonoBehaviour, IDamageable
 
     Animator anim;
 
-    public float health = 5;
+    public float health;
     public bool Targetable{get { return _targetable; }
     set{
         _targetable = value;
