@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DamageableCharacter : MonoBehaviour, IDamageable
 {
@@ -13,11 +14,6 @@ public class DamageableCharacter : MonoBehaviour, IDamageable
         set{
             if (value < health){
                 anim.SetTrigger("Hit");
-                // RectTransform textTransform = Instantiate(healthText).GetComponent<RectTransform>();
-                // textTransform.transform.position = Camera.main.WorldToScreenPoint(gameObject.transform.position);
-
-                // Canvas canvas = GameObject.FindObjectOfType<Canvas>();
-                // textTransform.SetParent(canvas.transform);
             }
 
             health = value;
@@ -73,6 +69,7 @@ public class DamageableCharacter : MonoBehaviour, IDamageable
     }
 
     public void OnObjectDestroyed(){
+        ScoreSystem.scoreValue += 10;
         Destroy(gameObject);
     }
 }

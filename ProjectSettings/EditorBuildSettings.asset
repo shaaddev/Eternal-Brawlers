@@ -18,7 +18,7 @@ EditorBuildSettings:
     path: Assets/Scenes/EndlessLevel.unity
     guid: d07d3aa5300064ec6add33eb4862c1e9
   - enabled: 1
-    path: Assets/Scenes/NormalLevel.unity
+    path: Assets/Scenes/TrialLevel.unity
     guid: 9cf1eacd8ad784e3badb649c2d6e2764
   - enabled: 0
     path: Assets/Scenes/GameOver.unity

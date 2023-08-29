@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   swordCollider: {fileID: 4844635892131004629}
-  swordDamage: 2
+  swordDamage: 3
   knockbackForce: 500
   faceRight: {x: 0.8, y: 0.2, z: 0}
   faceLeft: {x: -0.8, y: 0.2, z: 0}
@@ -300,6 +300,7 @@ GameObject:
   - component: {fileID: 8821700568077131453}
   - component: {fileID: 1509526514869401945}
   - component: {fileID: 8526160273037224199}
+  - component: {fileID: 5799661183232440358}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -521,6 +522,19 @@ MonoBehaviour:
   health: 100
   _targetable: 1
   healthBar: {fileID: 3502279552655034577}
+--- !u!114 &5799661183232440358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6906375388113066746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d15402feb27b64d6ab33eb0e2083237e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameOverMenu: {fileID: 0}
 --- !u!1 &7190412753230858947
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,6 +11,10 @@ public class MainMenu : MonoBehaviour
     public GameObject switchT;
     // bool isSwitched = true;
 
+    void Start(){
+        ScoreSystem.scoreValue = 0;
+    }
+
     void Update()
     {
         if (Input.GetButtonDown("Cancel") && !keyPressed)
@@ -26,7 +30,7 @@ public class MainMenu : MonoBehaviour
             SceneManager.LoadScene("EndlessLevel");
             // Debug.Log("Endless Mode");
         } else {
-            SceneManager.LoadScene("NormalLevel");
+            SceneManager.LoadScene("TrialLevel");
             // Debug.Log("Normal Mode");
         }
     }
