@@ -9,6 +9,7 @@ public class MainMenu : MonoBehaviour
     private bool keyPressed = false;
 
     public GameObject switchT;
+    public Button sButton;
     // bool isSwitched = true;
 
     void Start(){
@@ -27,12 +28,12 @@ public class MainMenu : MonoBehaviour
     public void gameMode(){
         bool isGame = switchT.GetComponent<Toggle>().isOn;
         if (isGame){
+            sButton.interactable = true;
             SceneManager.LoadScene("EndlessLevel");
-            // Debug.Log("Endless Mode");
         } else {
-            SceneManager.LoadScene("TrialLevel");
-            // Debug.Log("Normal Mode");
+            sButton.interactable = false;
         }
+        sButton.interactable = true;
     }
 
 

@@ -46,6 +46,8 @@ public class DamageableCharacter : MonoBehaviour, IDamageable
 
     public HealthBar healthBar;
 
+    [SerializeField] private AudioSource bluntImpact;
+
     private void Start(){
         anim = GetComponent<Animator>();
         anim.SetBool("isAlive", isAlive);
@@ -56,6 +58,7 @@ public class DamageableCharacter : MonoBehaviour, IDamageable
 
 
     public void OnHit(float damage, Vector2 knockback){
+        bluntImpact.Play();
         Health -= damage;
 
         // apply force

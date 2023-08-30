@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 6746513396171399053}
   - component: {fileID: 7335603508037144237}
   - component: {fileID: 3467463394490582729}
-  - component: {fileID: 6439897649035668912}
   - component: {fileID: 1070738267948371802}
   m_Layer: 0
   m_Name: Enemy1
@@ -37,7 +36,7 @@ Transform:
   m_Children:
   - {fileID: 1060578085617169735}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7521697931917499586
 SpriteRenderer:
@@ -203,22 +202,6 @@ MonoBehaviour:
   damage: 4
   moveSpeed: 500
   detectionZone: {fileID: 1856525618207694308}
---- !u!114 &6439897649035668912
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 167614623882782292}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 244eac4134e5e4fac807bd22dae979ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  disableSimulation: 0
-  health: 10
-  _targetable: 1
-  healthBar: {fileID: 0}
 --- !u!95 &1070738267948371802
 Animator:
   serializedVersion: 5

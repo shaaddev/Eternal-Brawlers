@@ -10,12 +10,13 @@ Game Details:
 - Host on itch.io
 - Top Down Survival
 - Melee Combat Only
-- Two Modes (Normal x Endless)
+- Two Modes (Trial x Endless)
 
 Add:
-- Sounds
-- Endless (design) -> "optional"
+- Future Add-ons \|/
 
 Future:
-- Norse Mythology Powerups
-- "boy!" -> hint
+- Powerups
+- Other Weapons ()
+- More Enemies
+- Trial Level (Test player skills)

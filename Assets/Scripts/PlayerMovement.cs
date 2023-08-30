@@ -26,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
 
     public GameObject swordHitBox;
     Collider2D swordCollider;
+    [SerializeField] private AudioSource attack2;
 
 
     void Start()
@@ -66,6 +67,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void OnFire(){
+        attack2.Play();
         anim.SetTrigger("sword_attack");
     }
 
